@@ -161,17 +161,88 @@ So tell me what is the true meaning of this dream
 ---
 
 ## 📂 File Structure
-├── README.md ├── main_seq2seq_transliteration.py # All code for Q1 ├── gpt2_lyrics_finetune.py # Code for Q2 ├── hi.translit.sampled.train.tsv # Training dataset for Q1 ├── hi.translit.sampled.dev.tsv # Development dataset for Q1 ├── hi.translit.sampled.test.tsv # Test dataset for Q1 └── /fine_tuned_lyrics_gpt2/ # Fine-tuned GPT-2 model for Q2
+.
+├── README.md
+├── main_seq2seq_transliteration.py  # All code for Q1
+├── hi.translit.sampled.train.tsv
+├── hi.translit.sampled.dev.tsv
+└── hi.translit.sampled.test.tsv
 
 ---
 
-## 📘 References
-- [Keras LSTM Seq2Seq Example](https://machinelearningmastery.com/sequence-to-sequence-prediction-with-keras/)
-- [Machine Learning Mastery - Seq2Seq](https://machinelearningmastery.com/sequence-to-sequence-prediction/)
-- [Dakshina Dataset](https://www.google.com)
-- [GPT-2 Fine-tuning Tutorial](https://huggingface.co/docs/transformers/training)
-- [Poetry Dataset on Kaggle](https://www.kaggle.com)
+## Question 2: GPT-2 Fine-Tuning for Lyric Generation
+### Objective
+The goal is to fine-tune a pre-trained GPT-2 language model on a dataset of English poetry/lyrics, enabling it to generate new song-like text sequences.
+
+### Dataset
+The dataset used is **Paul Timothy Mooney's Poetry Dataset** (available on Kaggle).
+
+#### Files used:
+- `poetry_dataset.txt`: Poetry dataset for Q2 (combined and cleaned)
+
+### Tokenization and Preprocessing
+- **Tokenizer**: GPT2Tokenizer with `<|endoftext|>` as the end-of-sequence token.
+- **Padding**: Applied max-length padding (512) and truncation.
+- **Dataset**: Prepared using HuggingFace’s `datasets` library.
+
+### Model and Training Configuration
+- **Model**: GPT2LMHeadModel (pretrained GPT-2)
+- **Trainer**: HuggingFace Trainer
+- **Training Arguments**:
+  - **Epochs**: 5
+  - **Batch Size**: 4
+  - **Learning Rate**: 5e-5
+  - **Output Directory**: `./lyrics_generator`
+
+### Training Output
+- **Training Loss**: 2.79
+- **Training Time**: ~41 seconds for 5 epochs
+- **Model Saved To**: `./fine_tuned_lyrics_gpt2`
+
+### Sample Output
+**Prompt:** When the night comes  
+**Generated Lyrics:**
+**When the night comes And the moon rises in it, to see us The dream that makes us fall And all that's to be forgotten The dream is coming true. And you, like me, have told me all The tale of all this And you had this one word to tell of it all And this word is still the same And what do I know how to tell it all So tell me what is the true meaning of this dream**
+
+### How to Run
+1. Install the required dependencies:
+    ```bash
+    pip install transformers datasets kagglehub
+    ```
+2. Fine-tune the GPT-2 model:
+    ```bash
+    python gpt2_lyrics_finetune.py
+    ```
+
+### File Structure for Question 2
+📂 Question_2_Lyrics_Generation/
+├── README.md                           # Documentation for Question 2
+├── gpt2_lyrics_finetune.py             # Code for Q2 (GPT-2 fine-tuning for lyric generation)
+├── data/                               # Folder containing dataset files for Q2
+│   └── poetry_dataset.txt              # Dataset for Q2 (Poetry dataset)
+├── models/                             # Folder to store trained models for Q2
+│   └── fine_tuned_lyrics_gpt2/         # Fine-tuned GPT-2 model for Q2
+│       ├── config.json                 # Configuration for the fine-tuned model
+│       ├── pytorch_model.bin           # The model weights
+│       └── vocab.json                  # Vocabulary file for the model
+└── requirements.txt                    # File listing the dependencies for Q2
+
+
 
 ---
 
-👤 **Author**: Cherala Shivakrishna  
+## Author
+**Cheralashivakrishna**  
+
+
+---
+
+### References:
+- Keras LSTM Seq2Seq Example
+- Machine Learning Mastery - Seq2Seq
+- GPT-2 Fine-tuning Tutorial
+- Poetry Dataset on Kaggle
+
+---
+
+This `README.md` covers both questions with details of each task, code structure, how to run it,
