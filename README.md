@@ -165,7 +165,6 @@ This project fine-tunes the GPT-2 language model using Hugging Face's `transform
 ├── 📁 data/               # Contains lyrics text files
 ├── 📁 model/              # Stores trained model and checkpoints
 ├── 📁 outputs/            # Generated lyrics outputs
-├── 📄 README.md           # Project documentation
 ```
 
 ## Getting Started
@@ -204,8 +203,13 @@ print(generator("Love is", max_length=100)[0]['generated_text'])
 ## Sample Output
 
 ```
+Truncation was not explicitly activated but `max_length` is provided a specific value, please use `truncation=True` to explicitly truncate examples to max length. Defaulting to 'longest_first' truncation strategy. If you encode pairs of sequences (GLUE-style) with the tokenizer you can select this strategy more precisely by providing a specific strategy to `truncation`.
+Setting `pad_token_id` to `eos_token_id`:50256 for open-end generation.
 Love is you I get to know the way that you think
-But it's something that keeps me from wanting...
+But it's something that keeps me from wanting
+That love I might get to know you just a little more (Girl, I'm waiting) Yeah, you're a really good girl (Girl, you're a really good girl) Yeah, you're a really good girl (Girl, you're a really good girl)
+You're a really good girl (Girl, you're a really good girl)
+You're a really
 ```
 
 ## Contribution
@@ -221,6 +225,3 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ---
 
 **Author:** Cherala Shiva Krishna
-
-\$1
-
