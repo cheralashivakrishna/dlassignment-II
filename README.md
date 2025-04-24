@@ -15,127 +15,81 @@ This repository contains the implementation of **Question 1** and **Question 2**
 
 ### 🚀 Objective
 
-To build a flexible RNN-based seq2seq architecture for transliterating Latin script inputs to their corresponding Devanagari script representations. The model supports multiple cell types: **SimpleRNN**, **GRU**, and **LSTM**, with tunable hyperparameters.
+# 🔤 English-to-Hindi Character-Level Transliteration  
+**Using Sequence-to-Sequence LSTM (Encoder-Decoder)**  
+Course: `22CAC04` — Deep Learning  
+Institute: Chaitanya Bharathi Institute of Technology  
 
----
+## 📌 Project Description
+This project implements a **character-level sequence-to-sequence transliteration model** that converts Latin script (English characters) into Devanagari script (Hindi). It uses an encoder-decoder architecture with LSTM units and greedy decoding for inference. The dataset used is the Hindi portion of the **Dakshina dataset**.
 
-### 🗂️ Dataset
+## 📂 Dataset
+**Dakshina Dataset (Hindi)** from AI4Bharat:  
+- Train file: `hi.translit.sampled.train.tsv`  
+- Dev file: `hi.translit.sampled.dev.tsv`  
+- Test file: `hi.translit.sampled.test.tsv`  
 
-Dataset used: [Dakshina Dataset (Google)](https://github.com/google-research-datasets/dakshina)\
-Files used:
-
-- `hi.translit.sampled.train.tsv`
-- `hi.translit.sampled.dev.tsv`
-- `hi.translit.sampled.test.tsv`
-
-Each file contains columns:
-
-- Devanagari script
-- Latin transliteration
-- Frequency count
-
----
-
-### 🧱 Model Architecture
-
-1. **Embedding Layer** for both encoder and decoder
-2. **Encoder RNN (LSTM / GRU / SimpleRNN)** - processes the Latin script input
-3. **Decoder RNN (LSTM / GRU / SimpleRNN)** - generates the Devanagari script character-by-character using the final encoder state
-4. **Dense Layer** with softmax activation for character prediction
-
-**Flexibility:**
-
-- Embedding Dimension
-- Hidden Units
-- RNN Cell Type (`'lstm'`, `'gru'`, `'rnn'`)
-- Number of Layers (extendable in the function)
-
----
-
-### 🧮 Theoretical Analysis
-
-#### a) Total Number of Computations
-
-Let:
-
-- `m` = embedding dimension
-- `k` = hidden size
-- `T` = sequence length
-- `V` = vocabulary size
-
-Total computations (approx):\
-Encoder: O(T × (m×k + k²))\
-Decoder: O(T × (m×k + k² + k×V))
-
-#### b) Total Number of Parameters
-
-Encoder LSTM: 4 × (k×(k + m + 1))\
-Decoder LSTM: 4 × (k×(k + m + 1))\
-Dense Output: k × V\
-Embedding Layers: V × m (each for encoder and decoder)
-
----
-
-### 📊 Training Details
-
-- **Optimizer:** Adam
-- **Loss:** Categorical Crossentropy
-- **Batch Size:** 64
-- **Epochs:** 30
-- **Validation Accuracy:** \~94.6%
-- **Test Accuracy:** **0.9457**
-
----
-
-### 📈 Sample Predictions
-
-| Input (Latin) | Target (Devanagari) | Predicted |
-| ------------- | ------------------- | --------- |
-| a n k         | अ ं क               | ऐंक       |
-| a n k a       | अ ं क               | अंका      |
-| a n k i t     | अ ं क ि त           | अंकित     |
-| a n a k o n   | अ ं क ो ं           | अनकों     |
-| a n k h o n   | अ ं क ो ं           | अंखों     |
-
----
-
-### 🧲 Evaluation
-
-```bash
-Test Accuracy: 0.9457
+Each line contains:  
+```
+<Devanagari Word> <Latin Word> <Count>
 ```
 
----
+## 📚 Architecture Overview
+- **Encoder**: LSTM with an embedding layer to process the Latin script input.
+- **Decoder**: LSTM with an embedding and dense layer to generate Devanagari output.
+- **Loss Function**: Sparse categorical crossentropy.
+- **Decoder Strategy**: Greedy decoding (token with max probability at each time step).
 
-### 🛠️ How to Run
+## 🧠 Model Details
+| Component   | Details |
+|------------|---------|
+| Embedding Dim | 256 |
+| Hidden Units  | 512 |
+| Encoder       | LSTM |
+| Decoder       | LSTM |
+| Output Layer  | Dense with softmax |
+| Parameters    | ~3.2 Million |
+| Accuracy      | ~98.84% (Training) |
+| Val Accuracy  | ~94.88% |
 
-#### 🔧 Install Requirements
+## 🏋️ Training
+- **Epochs**: 10  
+- **Batch Size**: 64  
+- **Optimizer**: Adam  
+- **Metrics**: Accuracy  
 
-```bash
-pip install tensorflow==2.12.0 pandas gdown
+Example training log:
+```
+Epoch 1/10 - loss: 1.0974 - accuracy: 0.7296 - val_loss: 0.6642 - val_accuracy: 0.8114
+...
+Epoch 10/10 - loss: 0.0377 - accuracy: 0.9884 - val_loss: 0.1842 - val_accuracy: 0.9488
 ```
 
-#### ▶️ Run Training
+## 🔍 Inference Output (Greedy Decoding)
+| Input (Latin) | Predicted (Devanagari) |
+|---------------|-------------------------|
+| ank           | अंक                     |
+| anka          | अंका                    |
+| ankit         | अंकित                   |
+| anakon        | अनकों                   |
+| ankhon        | अनखों                   |
+| ankon         | अंकों                   |
+| angkor        | अंकोकर                  |
+| ankor         | अंकोर                   |
+| angaarak      | अंगारक                  |
+| angarak       | अंगारक                  |
 
-Ensure the `.tsv` files from Dakshina dataset are in your working directory.
+## 🛠 How to Run
 
-```python
-python main_seq2seq_transliteration.py
-```
+1. Place the `.tsv` files in your working directory or Colab `/content/`.
+2. Run the full Python script.
+3. Evaluate with `decode_sequence()` on test inputs.
 
----
-
-### 📂 File Structure
-
-```
-.
-├── README.md
-├── main_seq2seq_transliteration.py  # All code for Q1
-├── hi.translit.sampled.train.tsv
-├── hi.translit.sampled.dev.tsv
-└── hi.translit.sampled.test.tsv
-```
-
+## ✅ Future Improvements
+- Add **Attention Mechanism** for better alignment.
+- Implement **Beam Search** decoding.
+- Train with **Subword or Word-level** units for larger vocabularies.
+- Integrate **BLEU Score** or **Edit Distance** for evaluation.
 ---
 
 📘 References
